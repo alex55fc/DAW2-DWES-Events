@@ -35,7 +35,7 @@
             foreach ($usuarios as $u) {
           ?>
               <tr>
-                <td><?php echo $u["id"];  ?></td>
+                <td><?php echo $u["id1"];  ?></td>
                 <td><?php echo $u["usuario"];  ?></td>
                 <td><?php echo $u["email"];  ?></td>
                 <td><?php echo $u["role"];  ?></td>
