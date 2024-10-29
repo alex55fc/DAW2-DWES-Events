@@ -258,7 +258,7 @@ if ((isset($_SESSION["valido"])) and ($_SESSION["valido"] == "1")) {
         }
 
       });
-
+      /*
       $("#username").change(function() {
         let username = $("#username").val();
         $.ajax({
@@ -280,7 +280,7 @@ if ((isset($_SESSION["valido"])) and ($_SESSION["valido"] == "1")) {
           }
         });
       });
-
+      */
       $("#username").on('keyup', function() {
         $("#errorV").html("");
         var value = $(this).val().length;

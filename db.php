@@ -12,7 +12,7 @@ if(mysqli_connect_errno()){
 }
 $mysqli->set_charset("utf8");
 
-
+//! del anterior ejercicio par conexion PDO
 try {
     $dbh = new PDO('mysql:host=localhost;dbname=ifc303', $user, $password       );
 } catch (PDOException $e) {

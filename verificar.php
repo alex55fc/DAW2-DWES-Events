@@ -1,28 +1,22 @@
 <?php
-//SELECT `id`, `username`, `pass`, `nombre`, `apellidos`, `email`, `created_at`, `updated_at` FROM `usuarios` WHERE 1
-$username=$_POST["username"];
-$pass=$_POST["pass"];
+include("controller.php");
+$username = $_POST["username"];
+$pass = md5($_POST["pass"]);
 
-$sql="SELECT `id`, `username`, `pass`, `nombre`, `apellidos`, `email`, `created_at`, `updated_at` FROM `usuarios` WHERE 1 ";
-$sql.=" and `username`='".$username."'";
-$sql.=" and `pass`='".$pass."'";
+$fila = VerificarUsuario($username, $pass);
 
-include("db.php");
-$query=$mysqli->query($sql);
-if($query->num_rows>0){
+if ($fila != 0) {
     //usuario valido
-        $fila=$query->fetch_assoc();
-        session_start();
-        $_SESSION["username"]=$fila["username"]; 
-        $_SESSION["nombre"]=$fila["nombre"]; 
-        $_SESSION["apellidos"]=$fila["apellidos"]; 
-        $_SESSION["email"]=$fila["email"]; 
-        $_SESSION["valido"]="1";
-        //header("location:index.php");
+    session_start();
+    $_SESSION["id_roles"] = $fila["id_roles"];
+    $filaRole = getById("roles",$fila["id_roles"]);
+    $_SESSION["role"]= $filaRole["role"];
+    $_SESSION["usuario"] = $fila["usuario"];
+    $_SESSION["email"] = $fila["email"];
+    $_SESSION["valido"] = "1";
+
     echo 1;
-}else{
-    //usuario o contraseña no son correctos
-    //header("location:login.php");
+
+} else {
     echo 0;
 }
-?>
