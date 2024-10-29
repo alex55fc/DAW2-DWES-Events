@@ -84,6 +84,37 @@ function SelectOptionsId($tabla, $mostrar)
     }
     return $options;
 }
+function saveV($tabla, $datos)
+{
+
+    include("db.php");
+    $sql = "INSERT INTO `" . $tabla . "`(";
+
+    $aux = 0;
+    foreach ($datos as $k => $v) {
+        if ($aux == 0) {
+            $sql .= "`" . $k . "`";
+            $aux++;
+        } else {
+            $sql .= ",`" . $k . "`";
+        }
+    }
+    $sql .= ")";
+    $sql .= "VALUES (";
+    $aux = 0;
+    foreach ($datos as $k => $v) {
+        if ($aux == 0) {
+            $sql .= "'" . $v . "'";
+            $aux++;
+        } else {
+            $sql .= ",'" . $v . "'";
+        }
+    }
+    $sql .= ")";
+
+    if ($mysqli->query($sql)) return $mysqli->insert_id;
+    else return 0;
+}
 //! LO DE ABAJO ES DEL ANTERIOR EJERCICIO
 function getAll($tabla)
 {
@@ -116,40 +147,6 @@ function save($tabla, $campos, $valores)
     if ($mysqli->query($sql)) return $mysqli->insert_id;
     else return 0;
 }
-
-
-function saveV($tabla, $datos)
-{
-
-    include("db.php");
-    $sql = "INSERT INTO `" . $tabla . "`(";
-
-    $aux = 0;
-    foreach ($datos as $k => $v) {
-        if ($aux == 0) {
-            $sql .= "`" . $k . "`";
-            $aux++;
-        } else {
-            $sql .= ",`" . $k . "`";
-        }
-    }
-    $sql .= ")";
-    $sql .= "VALUES (";
-    $aux = 0;
-    foreach ($datos as $k => $v) {
-        if ($aux == 0) {
-            $sql .= "'" . $v . "'";
-            $aux++;
-        } else {
-            $sql .= ",'" . $v . "'";
-        }
-    }
-    $sql .= ")";
-
-    if ($mysqli->query($sql)) return $mysqli->insert_id;
-    else return 0;
-}
-
 
 function saveV2($tabla, $datos)
 {
