@@ -9,6 +9,7 @@ if ($fila != 0) {
     //usuario valido
     session_start();
     $_SESSION["id_roles"] = $fila["id_roles"];
+    //este getById es una funccion
     $filaRole = getById("roles",$fila["id_roles"]);
     $_SESSION["role"]= $filaRole["role"];
     $_SESSION["usuario"] = $fila["usuario"];

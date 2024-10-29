@@ -6,29 +6,27 @@ function VerificarUsuario($username, $passMd5)
     $sql .= " and `usuario`='" . $username . "'";
     $sql .= " and `password`='" . $passMd5 . "'";
 
-    $query=$mysqli -> query($sql);
-    if($query-> num_rows >0){
-        $fila=$query->fetch_assoc();
+    $query = $mysqli->query($sql);
+    if ($query->num_rows > 0) {
+        $fila = $query->fetch_assoc();
         return $fila;
-    }
-    else{
+    } else {
         return 0;
     }
 }
-
+//este no lo estamos usando
 function VerificarUsuario2($tabla, $column1, $valor1, $column2, $valor2)
 {
     include("db.php");
-    $sql = "SELECT * FROM `" .$tabla. "` WHERE 1 ";
-    $sql .= " and `".$column1. "`='" . $valor1 . "'";
-    $sql .= " and `".$column2. "`='" . $passMd5 . "'";
+    $sql = "SELECT * FROM `" . $tabla . "` WHERE 1 ";
+    $sql .= " and `" . $column1 . "`='" . $valor1 . "'";
+    $sql .= " and `" . $column2 . "`='" . $passMd5 . "'";
 
-    $query=$mysqli -> query($sql);
-    if($query-> num_rows >0){
-        $fila=$query->fetch_assoc();
+    $query = $mysqli->query($sql);
+    if ($query->num_rows > 0) {
+        $fila = $query->fetch_assoc();
         return $fila;
-    }
-    else{
+    } else {
         return 0;
     }
 }
@@ -44,17 +42,6 @@ function getById($tabla, $id)
     return $fila;
 }
 
-//! LO DE ABAJO ES DEL ANTERIOR EJERCICIO
-function getAll($tabla)
-{
-    include("db.php");
-    $sql = "SELECT * FROM `" . $tabla . "` WHERE 1";
-
-    $query = $mysqli->query($sql);
-
-    return $query;
-}
-
 function getAllV($tabla)
 {
     include("db.php");
@@ -68,11 +55,45 @@ function getAllV($tabla)
     }
     return $resultado;
 }
+function getAllVInner($tabla1, $tabla2, $id1, $id2)
+{
+    include("db.php");
+    $resultado = array();
+    $sql = "SELECT `" . $tabla1 . "`.*,`" . $tabla2 . "`.*, `" . $tabla1 . "`.id as id1 FROM `" . $tabla1 . "` ";
+    $sql .= " INNER JOIN `" . $tabla2 . "` ON `" . $tabla1 . "`.`" . $id1 . "`=`" . $tabla2 . "`.`" . $id2 . "`";
 
+    $query = $mysqli->query($sql);
+    if ($query->num_rows > 0) {
+        while ($fila = $query->fetch_assoc()) {
+            array_push($resultado, $fila);
+        }
+    }
+    return $resultado;
+}
 
+function SelectOptionsId($tabla, $mostrar)
+{
+    include("db.php");
+    $sql = "SELECT `id`, `" . $mostrar . "` FROM `" . $tabla . "`";
+    $query = $mysqli->query($sql);
+    if ($query->num_rows > 0) {
+        while ($fila = $query->fetch_assoc()) {
 
+            $options .= '<option value="' . $fila["id"] . '">' . $fila[$mostrar] . '</option>';
+        }
+    }
+    return $options;
+}
+//! LO DE ABAJO ES DEL ANTERIOR EJERCICIO
+function getAll($tabla)
+{
+    include("db.php");
+    $sql = "SELECT * FROM `" . $tabla . "` WHERE 1";
 
+    $query = $mysqli->query($sql);
 
+    return $query;
+}
 function delById($tabla, $id)
 {
     include("db.php");
@@ -389,21 +410,6 @@ function SelectProvincias()
 <?php
         }
     }
-}
-
-
-function SelectOptionsId($tabla, $mostrar)
-{
-    include("db.php");
-    $sql = "SELECT `id`, `" . $mostrar . "` FROM `" . $tabla . "`";
-    $query = $mysqli->query($sql);
-    if ($query->num_rows > 0) {
-        while ($fila = $query->fetch_assoc()) {
-
-            $options .= '<option value="' . $fila["id"] . '">' . $fila[$mostrar] . '</option>';
-        }
-    }
-    return $options;
 }
 
 function SelectOptions($tabla, $value, $mostrar)
