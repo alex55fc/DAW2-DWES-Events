@@ -39,7 +39,10 @@
                 <td><?php echo $u["usuario"];  ?></td>
                 <td><?php echo $u["email"];  ?></td>
                 <td><?php echo $u["role"];  ?></td>
-                <td>Acciones</td>
+                <td>
+                  <a href="modulo_usuarios_edit.php?id= <?php  echo $u["id1"];  ?>"><i class="fa-solid fa-pen-to-square fa-2x"></i></a>
+
+                </td>
               </tr>
           <?php
 

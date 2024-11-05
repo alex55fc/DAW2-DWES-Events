@@ -12,29 +12,34 @@
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Usuarios</h1>
+          <h1 class="h2">Usuarios- Editar</h1>
           <a href="modulo_usuarios_list.php" class="btn btn-primary">Volver</a>
         </div>
 
+<!-- Traemos la consulta del usuario atraves de la funcion, ahora sustituimos el placeholder por los datos del usuario que trajimos al hacer click en EDIT-->
+        <?php 
+        $user = getById("usuarios", $_GET["id"]);
+        ?>
         <div class="col-4">
           <form action="#" method="post" enctype="multipart/form-data" id="formularioAlex">
+          <input type="hidden" class="form-control" id="id" name="id" value="<?php echo $user["id"];?>"  >
 
             <div class="mb-3">
               <label for="usuario" class="form-label">Usuario</label>
               <span id="usuario_error" class="text-danger"></span>
-              <input type="text" class="form-control" id="usuario" name="usuario" placeholder="usuario">
+              <input type="text" class="form-control" id="usuario" name="usuario" placeholder="usuario" value="<?php  echo $user["usuario"];  ?>">
             </div>
 
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
               <span id="password_error" class="text-danger"></span>
-              <input type="text" class="form-control" id="password" name="password" placeholder="password">
+              <input type="password" class="form-control" id="password" name="password" placeholder="password" value="<?php  echo $user["password"];  ?>">
             </div>
 
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <span id="email_error" class="text-danger"></span>
-              <input type="text" class="form-control" id="email" name="email" placeholder="email">
+              <input type="text" class="form-control" id="email" name="email" placeholder="email" value="<?php  echo $user["email"];  ?>">
             </div>
 
             <div class="mb-3">
@@ -42,13 +47,13 @@
               <span id="id_roles_error" class="text-danger"></span>
               <select class="form-control" id="id_roles" name="id_roles">
                 <option></option>
-                <?php echo SelectOptionsId("roles", "role"); ?>
-<!-- Otra forma de hacerlo  <?php // echo SelectOptionsIdSel("roles", "role", $user["id"]); ?> -->
+                <?php echo SelectOptionsIdSel("roles", "role",$user["id"]); ?>
+                <?php // echo SelectOptionsId("roles", "role"); ?>
               </select>
             </div>
 
             <div class="mb-3">
-              <input type="button" class="form-control" value="Aceptar" id="btnform1">
+              <input type="button" class="form-control" value="Aceptar" id="buttonFormularioAlex">
             </div>
 
           </form>
@@ -65,7 +70,7 @@
   <script>
     $(document).ready(function() {
 
-      $("#btnform1").click(function() {
+      $("#buttonFormularioAlex").click(function() {
         // Swal.fire("SweetAlert2 is working!");
 
         //Primero atrapamos lo que escribio el usuario
@@ -105,14 +110,14 @@
             //usamos serialize para pasar todos los datos(cuando sean muchos)
             data:$("#formularioAlex").serialize() ,
             method: "POST",
-            url: "modulo_usuarios_insert.php",
+            url: "modulo_usuarios_update.php",
             success: function(result) {
               alert(result);
-              if (result > 1) {
+              if (result == 1) {
                 //alert("Datos insertados correctamente!");
                 let timerInterval;
                 Swal.fire({
-                  title: "Datos insertados correctamente!",
+                  title: "Datos actualizados correctamente!",
                   html: "",
                   timer: 2000,
                   timerProgressBar: true,
@@ -133,7 +138,7 @@
                   }
                 });
               } else {
-                Swal.fire("No Insertado correctamente!");
+                Swal.fire("No actualizado correctamente!");
 
               }
             }

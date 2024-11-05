@@ -115,6 +115,52 @@ function saveV($tabla, $datos)
     if ($mysqli->query($sql)) return $mysqli->insert_id;
     else return 0;
 }
+function SelectOptionsIdSel($tabla, $mostrar, $sel)
+{
+    include("db.php");
+    $query = getAll($tabla);
+    $options = "";
+    if ($query->num_rows > 0) {
+        while ($fila = $query->fetch_assoc()) {
+            $selected = "";
+            if ($fila["id"] == $sel) {
+                $selected = "selected";
+            }
+
+            $options .= '<option value="' . $fila["id"] . '"   ' . $selected . '   >' . $fila[$mostrar] . '</option>';
+        }
+    }
+    return $options;
+}
+function conseguirValor($tabla, $campo, $id)
+{
+    include("db.php");
+    $fila = array();
+    $sql = "SELECT `" . $campo . "` FROM `" . $tabla . "` WHERE `id`=" . $id;
+    $query = $mysqli->query($sql);
+    if ($query->num_rows > 0) {
+        $fila = $query->fetch_assoc();
+    }
+    return $fila[$campo];
+}
+function updateById($tabla, $datos, $id)
+{
+    include("db.php");
+    $sql = "UPDATE `" . $tabla . "` SET  ";
+    $aux = 0;
+    foreach ($datos as $k => $v) {
+        if ($aux == 0) {
+            $sql .= "`" . $k . "`='" . $v . "'";
+            $aux++;
+        } else {
+            $sql .= ",`" . $k . "`='" . $v . "'";
+        }
+    }
+    $sql .= " WHERE `id`='" . $id . "'";
+
+    if ($mysqli->query($sql)) return 1;
+    else return 0;
+}
 //! LO DE ABAJO ES DEL ANTERIOR EJERCICIO
 function getAll($tabla)
 {
@@ -203,27 +249,6 @@ function savePDO($tabla, $datos)
     $stmt->execute($in);
     echo 1;
 }
-
-
-function updateById($tabla, $datos, $id)
-{
-    include("db.php");
-    $sql = "UPDATE `" . $tabla . "` SET  ";
-    $aux = 0;
-    foreach ($datos as $k => $v) {
-        if ($aux == 0) {
-            $sql .= "`" . $k . "`='" . $v . "'";
-            $aux++;
-        } else {
-            $sql .= ",`" . $k . "`='" . $v . "'";
-        }
-    }
-    $sql .= " WHERE `id`='" . $id . "'";
-
-    if ($mysqli->query($sql)) return 1;
-    else return 0;
-}
-
 
 function TodosClientes()
 {
@@ -559,28 +584,6 @@ function SelectOptionsVariosCamposOrderByArray($tabla, $value, $Vmostrar, $separ
 }
 
 
-
-
-
-function SelectOptionsIdSel($tabla, $mostrar, $sel)
-{
-    include("db.php");
-    // $sql="SELECT `id`, `".$mostrar."` FROM `".$tabla."`";
-    $query = getAll($tabla);
-    //$query=$mysqli->query($sql);    
-    if ($query->num_rows > 0) {
-        while ($fila = $query->fetch_assoc()) {
-            $selected = "";
-            if ($fila["id"] == $sel) {
-                $selected = "selected";
-            }
-
-            $options .= '<option value="' . $fila["id"] . '"   ' . $selected . '   >' . $fila[$mostrar] . '</option>';
-        }
-    }
-    return $options;
-}
-
 function SelectOpciones($opciones)
 {
     $options = "";
@@ -679,18 +682,6 @@ function UploadFile3($file, $target_file, $nombre)
             return "";
         }
     } else return "";
-}
-
-function conseguirValor($tabla, $campo, $id)
-{
-    include("db.php");
-    $fila = array();
-    $sql = "SELECT `" . $campo . "` FROM `" . $tabla . "` WHERE `id`=" . $id;
-    $query = $mysqli->query($sql);
-    if ($query->num_rows > 0) {
-        $fila = $query->fetch_assoc();
-    }
-    return $fila[$campo];
 }
 
 function borrarArchivo($target)
